@@ -302,15 +302,23 @@ def get_annual_composite(region_geom, year):
                     .filterDate(f'{year}-01-01', f'{year}-12-31'))
     annual_img = annual_col.first()
     composite  = annual_img.select(
-        ['blue', 'green', 'red', 'nir', 'swir1', 'swir2', 'thermal'],
-        ['blue', 'green', 'red', 'nir', 'swir1', 'swir2', 'temp']
+        ['blue', 'green', 'red', 'nir', 'swir1', 'swir2'],
+        ['blue', 'green', 'red', 'nir', 'swir1', 'swir2']
     ).clip(region_geom)
 
     ndvi = composite.normalizedDifference(['nir', 'red']).rename('ndvi')
     ndwi = composite.normalizedDifference(['green', 'nir']).rename('ndwi')
     ndbi = composite.normalizedDifference(['swir1', 'nir']).rename('ndbi')
+    savi = composite.expression(
+        '1.5 * (NIR - RED) / (NIR + RED + 0.5)',
+        {'NIR': composite.select('nir'), 'RED': composite.select('red')}
+    ).rename('savi')
+    evi = composite.expression(
+    '2.5 * (NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1)',
+    {'NIR': composite.select('nir'), 'RED': composite.select('red'), 'BLUE': composite.select('blue')}
+  ).rename('evi')
 
-    return composite.addBands([ndvi, ndwi, ndbi])
+    return composite.addBands([ndvi, ndwi, ndbi, savi, evi])
 
 
 def sample_training_data(fc, max_per_class):
