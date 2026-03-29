@@ -111,12 +111,14 @@ if not _ee_ready:
 # ─────────────────────────────────────────────────────────────────────────────
 # 1. CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
-YEARS               = list(range(2020, 2023))          # 2018 → 2024 inclusive
+# YEARS               = list(range(2019, 2023))
+YEARS                 = [2019, 2023]  # ← set the years to process           
 MAX_POINTS_PER_CLASS = 2000
 ASSET_ROOT          = 'projects/epistem-490415/assets/RESTORE/'
 # DRIVE_FOLDER      = 'RESTORE_LULC_2025'              # uncomment if needed
 REGIONS             = ['Sumatera', 'Kalimantan', 'JawaBali', 'Sulawesi',
                         'Nusa', 'Maluku', 'Papua']
+# REGIONS             = ['Kalimantan']  
 
 CLASS_CONFIG = [
     {'id':  1, 'name': 'Undisturbed dry-land forest',  'color': '#006400'},
@@ -368,6 +370,10 @@ def process_region(region_name, year, training_all, regions_fc):
         region_points = region_points.randomColumn().filter('random < 0.5')
         print(f"    [i] Sumatera: reduced to ~50% of {orig_count} points")
 
+    if region_name == 'Kalimantan':
+        region_points = region_points.randomColumn().filter('random < 0.5')
+        print(f"    [i] Kalimantan: reduced to ~50% of {orig_count} points")
+    
     tracker.mark_step(year, region_name, 'points_filtered')
 
     # STEP 3 – sampleRegions

@@ -18,7 +18,7 @@ GEE_PROJECT = None
 # Adapt these to your project layout and year(s)
 ASSET_ROOT = 'projects/epistem-490415/assets/RESTORE/'
 REGIONS = ['Sumatera', 'Kalimantan', 'JawaBali', 'Sulawesi', 'Nusa', 'Maluku', 'Papua']
-YEARS = [2020, 2021, 2022]
+YEARS = [2019, 2023]
 REGIONS_VECTOR = 'users/hadicu06/IIASA/RESTORE/vector_datasets/classification_regions'
 
 # Command-line options:
